@@ -6,14 +6,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
-  @Output() menuItemClicked = new EventEmitter<string>();
-  currentActiveMenuItem = 'recipes';
-
   constructor() {}
 
   ngOnInit(): void {}
-
-  onMenuItemClick(menuItem: string) {
-    this.menuItemClicked.emit(menuItem);
-  }
 }

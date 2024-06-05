@@ -10,7 +10,7 @@ export class RecipeService {
   recipeSelected = new EventEmitter<Recipe>();
   private recipes: Recipe[] = [
     {
-      id: 'r1',
+      id: 1,
       name: 'Schnitzel',
       description: 'A super-tasty Schnitzel - just awesome!',
       imagePath:
@@ -22,7 +22,7 @@ export class RecipeService {
       ],
     },
     {
-      id: 'r2',
+      id: 2,
       name: 'Spaghetti',
       description: 'Italian Spaghetti with tomato sauce',
       imagePath:
@@ -34,7 +34,7 @@ export class RecipeService {
       ],
     },
     {
-      id: 'r3',
+      id: 3,
       name: 'Hamburger',
       description: 'American Hamburger with beef patty',
       imagePath:
@@ -46,7 +46,7 @@ export class RecipeService {
       ],
     },
     {
-      id: 'r4',
+      id: 4,
       name: 'Pizza',
       description: 'Italian Pizza with tomato sauce',
       imagePath:
@@ -58,7 +58,7 @@ export class RecipeService {
       ],
     },
     {
-      id: 'r5',
+      id: 5,
       name: 'Salad',
       description: 'Healthy Salad with vegetables',
       imagePath:
@@ -70,7 +70,7 @@ export class RecipeService {
       ],
     },
     {
-      id: 'r6',
+      id: 6,
       name: 'Curry',
       description: 'Indian Curry with chicken',
       imagePath:
@@ -87,6 +87,10 @@ export class RecipeService {
 
   getRecipes() {
     return [...this.recipes];
+  }
+
+  getRecipe(id: number) {
+    return this.recipes.find((recipe) => recipe.id === id);
   }
 
   addIngredientToShoppingList(ingredients: Ingredient[]) {

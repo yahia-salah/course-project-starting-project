@@ -1,7 +1,7 @@
 import { Ingredient } from './ingredient.model';
 
 export interface Recipe {
-  id: string;
+  id: number;
   name: string;
   description: string;
   imagePath: string;
