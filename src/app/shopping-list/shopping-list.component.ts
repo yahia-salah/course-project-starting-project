@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 export class ShoppingListComponent implements OnInit, OnDestroy {
   ingredients: Ingredient[] = [];
   subscription: Subscription;
+  selectedIngredient: Ingredient;
 
   constructor(private shoppingListService: ShoppingListService) {}
 
@@ -23,7 +24,18 @@ export class ShoppingListComponent implements OnInit, OnDestroy {
     this.subscription = this.shoppingListService.ingredientsChanged.subscribe(
       (ingredients) => {
         this.ingredients = ingredients;
+        this.selectedIngredient = null;
+        this.ingredients[this.ingredients.length - 1];
       }
     );
+  }
+
+  onEditItem(ingredient: Ingredient) {
+    this.selectedIngredient = ingredient;
+    this.shoppingListService.startedEditing.next(ingredient);
+  }
+
+  onClear() {
+    this.selectedIngredient = null;
   }
 }

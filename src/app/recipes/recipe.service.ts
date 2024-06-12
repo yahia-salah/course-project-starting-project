@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { Recipe } from '../../models/recipe.model';
 import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import { Ingredient } from '../../models/ingredient.model';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RecipeService {
+  recipesChanged = new Subject<Recipe[]>();
   private recipes: Recipe[] = [
     {
       id: 1,
@@ -94,5 +96,35 @@ export class RecipeService {
 
   addIngredientToShoppingList(ingredients: Ingredient[]) {
     this.shoppingListService.addIngredients(ingredients);
+  }
+
+  addRecipe(recipe: Recipe) {
+    recipe.id = this.getRecipeId();
+    this.recipes.push(recipe);
+    this.recipesChanged.next([...this.recipes]);
+  }
+
+  updateRecipe(id: number, newRecipe: Recipe) {
+    const index = this.recipes.findIndex((recipe) => recipe.id === id);
+    newRecipe.id = id;
+    this.recipes[index] = newRecipe;
+    this.recipesChanged.next([...this.recipes]);
+  }
+
+  deleteRecipe(id: number) {
+    this.recipes = this.recipes.filter((recipe) => recipe.id !== id);
+    this.recipesChanged.next([...this.recipes]);
+  }
+
+  private getRecipeId() {
+    let id = this.recipes.length;
+
+    this.recipes.forEach((recipe) => {
+      if (recipe.id > id) {
+        id = recipe.id + 1;
+      }
+    });
+
+    return id;
   }
 }
