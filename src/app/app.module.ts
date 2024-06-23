@@ -14,6 +14,21 @@ import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-ed
 import { DropdownDirective } from './shared/dropdown.directive';
 import { AppRoutingModule } from './app-routing.module';
 import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
+import {
+  connectFirestoreEmulator,
+  getFirestore,
+  provideFirestore,
+} from '@angular/fire/firestore';
+import { getFunctions, provideFunctions } from '@angular/fire/functions';
+import {
+  connectStorageEmulator,
+  getStorage,
+  provideStorage,
+} from '@angular/fire/storage';
+import { connectFunctionsEmulator } from '@firebase/functions';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -29,7 +44,41 @@ import { RecipeEditComponent } from './recipes/recipe-edit/recipe-edit.component
     RecipeEditComponent,
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, AppRoutingModule],
-  providers: [],
+  providers: [
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => {
+      const firestore = getFirestore();
+
+      if (environment.useEmulators)
+        connectFirestoreEmulator(firestore, 'localhost', 8091);
+
+      return firestore;
+    }),
+    provideAuth(() => {
+      const auth = getAuth();
+
+      if (environment.useEmulators)
+        connectAuthEmulator(auth, 'http://localhost:9099');
+
+      return auth;
+    }),
+    provideStorage(() => {
+      const storage = getStorage();
+
+      if (environment.useEmulators)
+        connectStorageEmulator(storage, 'localhost', 9199);
+
+      return storage;
+    }),
+    provideFunctions(() => {
+      const functions = getFunctions();
+
+      if (environment.useEmulators)
+        connectFunctionsEmulator(functions, 'localhost', 5001);
+
+      return functions;
+    }),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
