@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 })
 export class RecipeDetailComponent implements OnInit, OnDestroy {
   recipe: Recipe;
+  id: number;
   subscription: Subscription;
 
   constructor(
@@ -25,6 +26,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.route.params.subscribe((params) => {
+      this.id = +params['id'];
       this.recipe = this.recipeService.getRecipe(+params['id']);
     });
   }
@@ -41,7 +43,7 @@ export class RecipeDetailComponent implements OnInit, OnDestroy {
   }
 
   onDeleteRecipe() {
-    this.recipeService.deleteRecipe(this.recipe.id);
+    this.recipeService.deleteRecipe(this.id);
     this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

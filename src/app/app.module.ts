@@ -29,6 +29,7 @@ import {
 } from '@angular/fire/storage';
 import { connectFunctionsEmulator } from '@firebase/functions';
 import { environment } from '../environments/environment';
+import { provideHttpClient } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { environment } from '../environments/environment';
 
       return functions;
     }),
+    provideHttpClient(),
   ],
   bootstrap: [AppComponent],
 })

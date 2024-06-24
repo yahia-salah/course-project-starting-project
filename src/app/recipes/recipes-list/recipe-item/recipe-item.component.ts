@@ -11,4 +11,8 @@ export class RecipeItemComponent {
   @Input({ required: true }) recipe: Recipe;
 
   constructor(private recipeService: RecipeService) {}
+
+  getRecipeIndex() {
+    return this.recipeService.getIndexById(this.recipe.id);
+  }
 }

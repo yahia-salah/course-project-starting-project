@@ -13,7 +13,9 @@ export const environment = {
     messagingSenderId: '694916823968',
     appId: '1:694916823968:web:554346da1649c8155602c5',
   },
-  api: {},
+  api: {
+    baseUrl: 'http://localhost:5001/course-project-starting/us-central1',
+  },
 };
 
 /*
