@@ -30,6 +30,7 @@ import {
 import { connectFunctionsEmulator } from '@firebase/functions';
 import { environment } from '../environments/environment';
 import { provideHttpClient } from '@angular/common/http';
+import { AuthComponent } from './auth/auth/auth.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { provideHttpClient } from '@angular/common/http';
     ShoppingEditComponent,
     DropdownDirective,
     RecipeEditComponent,
+    AuthComponent,
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, AppRoutingModule],
   providers: [
