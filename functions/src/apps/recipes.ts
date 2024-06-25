@@ -4,13 +4,20 @@ import * as functions from 'firebase-functions';
 import { Recipe } from '../models/recipe.model';
 import * as _ from 'lodash';
 import { /*auth,*/ db /*, storage*/ } from '../init';
+import { getUserCredentialsMiddleware } from '../middleware/auth.middleware';
 
 export const recipesApp = express();
 recipesApp.use(cors({ origin: true }));
+recipesApp.use(getUserCredentialsMiddleware);
 
 recipesApp.put('/', async (req, res) => {
   functions.logger.debug(`Calling PUT recipes function.`);
   functions.logger.debug(`req.body`, req.body);
+
+  if (!(<any>req)['uid']) {
+    res.status(401).send('Unauthorized');
+    return;
+  }
 
   // Step 1: Delete all documents in the `recipes` collection
   const recipesRef = db.collection('recipes');
@@ -32,6 +39,11 @@ recipesApp.put('/', async (req, res) => {
 
 recipesApp.get('/', async (req, res) => {
   functions.logger.debug(`Calling GET recipes function.`);
+
+  if (!(<any>req)['uid']) {
+    res.status(401).send('Unauthorized');
+    return;
+  }
 
   await new Promise((resolve) => setTimeout(resolve, 2000));
 

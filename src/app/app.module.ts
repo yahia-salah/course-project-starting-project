@@ -34,6 +34,7 @@ import { AuthComponent } from './auth/auth/auth.component';
 import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
 import { loadingSpinnerInterceptor } from './shared/loading-interceptor';
 import { toastInterceptor } from './shared/toast-interceptor';
+import { authInterceptor } from './shared/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -86,7 +87,11 @@ import { toastInterceptor } from './shared/toast-interceptor';
       return functions;
     }),
     provideHttpClient(
-      withInterceptors([loadingSpinnerInterceptor, toastInterceptor])
+      withInterceptors([
+        loadingSpinnerInterceptor,
+        authInterceptor,
+        toastInterceptor,
+      ])
     ),
   ],
   bootstrap: [AppComponent],

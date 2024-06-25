@@ -1,8 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { Subscription, catchError, finalize, throwError } from 'rxjs';
+import {
+  Observable,
+  Subscription,
+  catchError,
+  finalize,
+  tap,
+  throwError,
+} from 'rxjs';
 import { LoadingSpinnerService } from '../../shared/loading-spinner.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -18,7 +26,8 @@ export class AuthComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private loadingSpinnerService: LoadingSpinnerService
+    private loadingSpinnerService: LoadingSpinnerService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -53,46 +62,35 @@ export class AuthComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.error = null;
     this.loadingSpinnerService.show();
+    let authObs: Observable<any>;
     if (!this.isLoggedIn) {
       if (this.form.invalid) {
         this.loadingSpinnerService.hide();
         return;
       }
       if (!this.isLoginMode) {
-        this.authService
-          .signUp(this.form.value.email, this.form.value.password)
-          .pipe(
-            finalize(() => this.loadingSpinnerService.hide()),
-            catchError((error) => {
-              this.error = error.message;
-              return throwError(() => error);
-            })
-          )
-          .subscribe();
+        authObs = this.authService.signUp(
+          this.form.value.email,
+          this.form.value.password
+        );
       } else {
-        this.authService
-          .login(this.form.value.email, this.form.value.password)
-          .pipe(
-            finalize(() => this.loadingSpinnerService.hide()),
-            catchError((error) => {
-              this.error = error.message;
-              return throwError(() => error);
-            })
-          )
-          .subscribe();
+        authObs = this.authService.login(
+          this.form.value.email,
+          this.form.value.password
+        );
       }
     } else {
-      this.authService
-        .logout()
-        .pipe(
-          finalize(() => this.loadingSpinnerService.hide()),
-          catchError((error) => {
-            this.error = error.message;
-            return throwError(() => error);
-          })
-        )
-        .subscribe();
+      authObs = this.authService.logout();
     }
-    this.form.reset();
+    authObs
+      .pipe(
+        finalize(() => this.loadingSpinnerService.hide()),
+        catchError((error) => {
+          this.error = error.message;
+          return throwError(() => error);
+        }),
+        tap({ complete: () => this.form.reset() })
+      )
+      .subscribe(() => this.router.navigate(['/']));
   }
 }
