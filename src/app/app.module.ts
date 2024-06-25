@@ -29,8 +29,11 @@ import {
 } from '@angular/fire/storage';
 import { connectFunctionsEmulator } from '@firebase/functions';
 import { environment } from '../environments/environment';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { AuthComponent } from './auth/auth/auth.component';
+import { LoadingSpinnerComponent } from './shared/loading-spinner/loading-spinner.component';
+import { loadingSpinnerInterceptor } from './shared/loading-interceptor';
+import { toastInterceptor } from './shared/toast-interceptor';
 
 @NgModule({
   declarations: [
@@ -45,6 +48,7 @@ import { AuthComponent } from './auth/auth/auth.component';
     DropdownDirective,
     RecipeEditComponent,
     AuthComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [BrowserModule, FormsModule, ReactiveFormsModule, AppRoutingModule],
   providers: [
@@ -81,7 +85,9 @@ import { AuthComponent } from './auth/auth/auth.component';
 
       return functions;
     }),
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptors([loadingSpinnerInterceptor, toastInterceptor])
+    ),
   ],
   bootstrap: [AppComponent],
 })
