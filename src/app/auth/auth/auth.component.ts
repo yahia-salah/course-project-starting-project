@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import { Subscription } from 'rxjs';
+import { Subscription, catchError, finalize, throwError } from 'rxjs';
+import { LoadingSpinnerService } from '../../shared/loading-spinner.service';
 
 @Component({
   selector: 'app-auth',
@@ -13,8 +14,12 @@ export class AuthComponent implements OnInit, OnDestroy {
   form: FormGroup;
   isLoggedIn = false;
   authStateSubscription: Subscription;
+  error: string;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private loadingSpinnerService: LoadingSpinnerService
+  ) {}
 
   ngOnInit(): void {
     this.form = new FormGroup({
@@ -46,20 +51,47 @@ export class AuthComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+    this.error = null;
+    this.loadingSpinnerService.show();
     if (!this.isLoggedIn) {
       if (this.form.invalid) {
+        this.loadingSpinnerService.hide();
         return;
       }
       if (!this.isLoginMode) {
-        this.authService.signUp(
-          this.form.value.email,
-          this.form.value.password
-        );
+        this.authService
+          .signUp(this.form.value.email, this.form.value.password)
+          .pipe(
+            finalize(() => this.loadingSpinnerService.hide()),
+            catchError((error) => {
+              this.error = error.message;
+              return throwError(() => error);
+            })
+          )
+          .subscribe();
       } else {
-        this.authService.login(this.form.value.email, this.form.value.password);
+        this.authService
+          .login(this.form.value.email, this.form.value.password)
+          .pipe(
+            finalize(() => this.loadingSpinnerService.hide()),
+            catchError((error) => {
+              this.error = error.message;
+              return throwError(() => error);
+            })
+          )
+          .subscribe();
       }
     } else {
-      this.authService.logout();
+      this.authService
+        .logout()
+        .pipe(
+          finalize(() => this.loadingSpinnerService.hide()),
+          catchError((error) => {
+            this.error = error.message;
+            return throwError(() => error);
+          })
+        )
+        .subscribe();
     }
     this.form.reset();
   }
