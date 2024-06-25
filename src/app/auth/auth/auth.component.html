@@ -24,11 +24,20 @@
         />
       </div>
       <div>
-        <button class="btn btn-primary" type="submit" [disabled]="form.invalid">
-          {{ isLoginMode ? "Login" : "Sign Up" }}
+        <button
+          class="btn btn-primary"
+          type="submit"
+          [disabled]="!isLoggedIn && form.invalid"
+        >
+          {{ isLoggedIn ? "Logout" : isLoginMode ? "Login" : "Sign Up" }}
         </button>
         |
-        <button class="btn btn-danger" type="button" (click)="onSwitchMode()">
+        <button
+          class="btn btn-danger"
+          type="button"
+          (click)="onSwitchMode()"
+          [disabled]="isLoggedIn"
+        >
           Switch to {{ !isLoginMode ? "Login" : "Sign Up" }}
         </button>
       </div>
