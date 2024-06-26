@@ -8,7 +8,7 @@ export function getUserCredentialsMiddleware(req: any, res: any, next: any) {
 
   let jwt = req.headers.authorization;
 
-  if (jwt) {
+  if (jwt && jwt.startsWith('Bearer ')) {
     jwt = jwt.replace('Bearer ', '');
     auth
       .verifyIdToken(jwt)
