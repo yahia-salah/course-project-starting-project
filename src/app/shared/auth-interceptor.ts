@@ -14,17 +14,20 @@ export const authInterceptor: HttpInterceptorFn = (
   const authService = inject(AuthService);
 
   console.log('Auth Interceptor');
-  console.log(authService.currentUser);
 
-  if (!authService.currentUser) return next(req);
+  return authService.currentUser$.pipe(
+    switchMap((user) => {
+      if (!user) return next(req);
 
-  return from(authService.currentUser.getIdToken()) // Convert Promise to Observable
-    .pipe(
-      switchMap((token) => {
-        const modifiedReq = req.clone({
-          headers: req.headers.set('Authorization', `Bearer ${token}`),
-        });
-        return next(modifiedReq);
-      })
-    );
+      return from(user.getIdToken()) // Convert Promise to Observable
+        .pipe(
+          switchMap((token) => {
+            const modifiedReq = req.clone({
+              headers: req.headers.set('Authorization', `Bearer ${token}`),
+            });
+            return next(modifiedReq);
+          })
+        );
+    })
+  );
 };

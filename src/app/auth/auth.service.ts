@@ -1,17 +1,21 @@
-import { catchError, from, throwError } from 'rxjs';
+import { catchError, from, map, tap, throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
   Auth,
+  User,
   authState,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  user,
 } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(private auth: Auth) {}
+  autoLogoutTimer: NodeJS.Timeout;
+  constructor(private auth: Auth, private router: Router) {}
 
   signUp(email: string, password: string) {
     return from(
@@ -32,11 +36,25 @@ export class AuthService {
   }
 
   logout() {
+    clearTimeout(this.autoLogoutTimer);
     return from(this.auth.signOut()).pipe(
       catchError((error) => {
         return throwError(() => new Error(this.translateError(error)));
-      })
+      }),
+      tap({ complete: () => this.router.navigate(['/auth']) })
     );
+  }
+
+  private autoLogout(user: User) {
+    console.log('Setting auto logout timer.');
+    console.log(
+      'Token Expiry: ',
+      new Date((<any>user).stsTokenManager.expirationTime)
+    );
+    this.autoLogoutTimer = setTimeout(() => {
+      console.log('Logging out user automatically.');
+      this.logout();
+    }, (<any>user).stsTokenManager.expirationTime - Date.now());
   }
 
   private translateError(error: any) {
@@ -51,11 +69,23 @@ export class AuthService {
     }
   }
 
-  get currentUser() {
-    return this.auth.currentUser;
+  get currentUser$() {
+    return from(this.auth.authStateReady()).pipe(
+      map(() => this.auth.currentUser)
+    );
   }
 
   get authState$() {
-    return authState(this.auth);
+    return authState(this.auth).pipe(
+      tap({
+        next: (user) => {
+          if (user) this.autoLogout(user);
+        },
+      })
+    );
+  }
+
+  get user$() {
+    return user(this.auth);
   }
 }
