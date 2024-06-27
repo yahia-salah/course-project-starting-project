@@ -165,6 +165,15 @@
               <li>
                 <a
                   class="dropdown-item d-flex gap-2"
+                  (click)="onLoadExampleData(); onNavClick($event)"
+                >
+                  <fa-icon [icon]="faVial"></fa-icon>
+                  Load Examples
+                </a>
+              </li>
+              <li>
+                <a
+                  class="dropdown-item d-flex gap-2"
                   (click)="onFetchData(); onNavClick($event)"
                 >
                   <fa-icon [icon]="faCloudArrowDown"></fa-icon>

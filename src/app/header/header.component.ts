@@ -17,7 +17,9 @@ import {
   faCloudArrowUp,
   faArrowRightFromBracket,
   faBowlFood,
+  faVial,
 } from '@fortawesome/free-solid-svg-icons';
+import { RecipeService } from '../recipes/recipe.service';
 
 @Component({
   selector: 'app-header',
@@ -33,10 +35,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   faCloudArrowUp = faCloudArrowUp;
   faArrowRightFromBracket = faArrowRightFromBracket;
   faBowlFood = faBowlFood;
+  faVial = faVial;
   @ViewChild('bdNavbarToggle') bdNavbarToggle: ElementRef;
   @ViewChild('bdNavbar') bdNavbar: ElementRef;
 
   constructor(
+    private recipeService: RecipeService,
     private dataStorageService: DataStorageService,
     private authService: AuthService,
     private loadingSpinnerService: LoadingSpinnerService,
@@ -84,6 +88,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  onLoadExampleData() {
+    this.recipeService.setExampleRecipes();
   }
 
   onNavClick(event: MouseEvent) {
