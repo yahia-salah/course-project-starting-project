@@ -10,6 +10,7 @@ import { SharedModule } from './shared/shared.module';
 import { ShoppingListModule } from './shopping-list/shopping-list.module';
 import { CoreModule } from './core.module';
 import { AuthModule } from './auth/auth.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -21,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
     SharedModule,
     CoreModule,
     AuthModule,
+    FontAwesomeModule,
   ],
   bootstrap: [AppComponent],
 })

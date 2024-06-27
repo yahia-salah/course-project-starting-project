@@ -58,12 +58,16 @@ export class AuthService {
   }
 
   private translateError(error: any) {
+    console.log('Translating Error: ', error);
     switch (error.code) {
       case 'auth/email-already-in-use':
         return 'This email is already in use.';
       case 'auth/user-not-found':
       case 'auth/wrong-password':
+      case 'auth/invalid-credential':
         return 'Invalid email or password.';
+      case 'auth/too-many-requests':
+        return 'Access to this account has been temporarily disabled due to many failed login attempts. You can immediately restore it by resetting your password or you can try again later.';
       default:
         return 'An error occurred.';
     }

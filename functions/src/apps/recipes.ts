@@ -27,10 +27,10 @@ recipesApp.put('/', async (req, res) => {
 
   // Step 2: Add new recipes to the collection
   const newRecipes = <Recipe[]>req.body; // Assuming this is an array of Recipe objects
-  newRecipes.forEach(async (recipe) => {
-    let docRef = await recipesRef.add(_.omit(recipe, 'id'));
-    recipe.id = docRef.id;
-  });
+  for (let i = 0; i < newRecipes.length; i++) {
+    let docRef = await recipesRef.add(_.omit(newRecipes[i], 'id'));
+    newRecipes[i].id = docRef.id;
+  }
 
   functions.logger.debug(`All recipes replaced successfully.`);
 
@@ -45,7 +45,7 @@ recipesApp.get('/', async (req, res) => {
     return;
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // await new Promise((resolve) => setTimeout(resolve, 2000));
 
   var recipesRef = await db.collection('recipes').get();
   var recipes = recipesRef.docs.map((doc) => {

@@ -1,3 +1,12 @@
-nav {
-    z-index: 999;
+header.navbar {
+  z-index: 999;
+}
+
+a.dropdown-item {
+  cursor: pointer;
+}
+
+.dropdown-header,
+.dropdown-divider {
+  cursor: default;
 }

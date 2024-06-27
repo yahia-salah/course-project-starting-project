@@ -1,10 +1,10 @@
 <div class="container align-content-center">
   <div class="row">
-    <div class="col-sm-12 col-md-6 offset-md-3 bg-light p-3 rounded-2">
+    <div class="col-sm-12 col-md-6 offset-md-3 card p-3 rounded-2">
       <div class="alert alert-danger" *ngIf="error">
         <p>{{ error }}</p>
       </div>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <form class="bg-transparent" [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="email" class="form-label">E-Mail</label>
           <input
@@ -15,7 +15,7 @@
             name="email"
             formControlName="email"
             [class.is-invalid]="
-              !form.get('email').valid && form.get('email').touched
+              form.get('email').invalid && form.get('email').touched
             "
             [class.is-valid]="
               form.get('email').valid && form.get('email').touched
@@ -24,20 +24,29 @@
         </div>
         <div class="form-group">
           <label for="password" class="form-label">Password</label>
-          <input
-            type="password"
-            id="password"
-            class="form-control mb-3"
-            ngModel
-            name="password"
-            formControlName="password"
-            [class.is-invalid]="
-              !form.get('password').valid && form.get('password').touched
-            "
-            [class.is-valid]="
-              form.get('password').valid && form.get('password').touched
-            "
-          />
+          <div class="input-group mb-3">
+            <input
+              [type]="passwordVisible ? 'text' : 'password'"
+              id="password"
+              class="form-control"
+              ngModel
+              name="password"
+              formControlName="password"
+              [class.is-invalid]="
+                form.get('password').invalid && form.get('password').touched
+              "
+              [class.is-valid]="
+                form.get('password').valid && form.get('password').touched
+              "
+            />
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              (click)="togglePasswordVisibility()"
+            >
+              <fa-icon [icon]="passwordVisible ? faEye : faEyeSlash"></fa-icon>
+            </button>
+          </div>
         </div>
         <div>
           <button

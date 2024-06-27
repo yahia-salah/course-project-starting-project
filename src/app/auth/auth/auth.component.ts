@@ -11,6 +11,7 @@ import {
 } from 'rxjs';
 import { LoadingSpinnerService } from '../../shared/loading-spinner.service';
 import { Router } from '@angular/router';
+import { faEyeSlash, faEye } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-auth',
@@ -23,6 +24,9 @@ export class AuthComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
   authStateSubscription: Subscription;
   error: string;
+  passwordVisible = false;
+  faEyeSlash = faEyeSlash;
+  faEye = faEye;
 
   constructor(
     private authService: AuthService,
@@ -92,5 +96,9 @@ export class AuthComponent implements OnInit, OnDestroy {
         tap({ complete: () => this.form.reset() })
       )
       .subscribe(() => this.router.navigate(['/']));
+  }
+
+  togglePasswordVisibility() {
+    this.passwordVisible = !this.passwordVisible;
   }
 }
