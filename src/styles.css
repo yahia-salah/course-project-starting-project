@@ -1,1 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
+div.swal2-container {
+    padding-bottom: 2rem!important;
+}
+
+@media (max-width: 768px) {
+    div.swal2-container {
+        padding-bottom: 4rem!important; /* Adjust the value as per your requirement */
+    }
+}

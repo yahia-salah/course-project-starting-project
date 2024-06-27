@@ -1,49 +1,63 @@
-<div class="row">
-  <div class="col-xs-12 col-md-6 col-md-offset-3">
-    <div class="alert alert-danger" *ngIf="error">
-      <p>{{ error }}</p>
+<div class="container align-content-center">
+  <div class="row">
+    <div class="col-sm-12 col-md-6 offset-md-3 bg-light p-3 rounded-2">
+      <div class="alert alert-danger" *ngIf="error">
+        <p>{{ error }}</p>
+      </div>
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+          <label for="email" class="form-label">E-Mail</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            ngModel
+            name="email"
+            formControlName="email"
+            [class.is-invalid]="
+              !form.get('email').valid && form.get('email').touched
+            "
+            [class.is-valid]="
+              form.get('email').valid && form.get('email').touched
+            "
+          />
+        </div>
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-control mb-3"
+            ngModel
+            name="password"
+            formControlName="password"
+            [class.is-invalid]="
+              !form.get('password').valid && form.get('password').touched
+            "
+            [class.is-valid]="
+              form.get('password').valid && form.get('password').touched
+            "
+          />
+        </div>
+        <div>
+          <button
+            class="btn btn-primary"
+            type="submit"
+            [disabled]="!isLoggedIn && form.invalid"
+          >
+            {{ isLoggedIn ? "Logout" : isLoginMode ? "Login" : "Sign Up" }}
+          </button>
+          |
+          <button
+            class="btn btn-danger"
+            type="button"
+            (click)="onSwitchMode()"
+            [disabled]="isLoggedIn"
+          >
+            Switch to {{ !isLoginMode ? "Login" : "Sign Up" }}
+          </button>
+        </div>
+      </form>
     </div>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="form-group">
-        <label for="email">E-Mail</label>
-        <input
-          type="email"
-          id="email"
-          class="form-control"
-          ngModel
-          name="email"
-          formControlName="email"
-        />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          class="form-control"
-          ngModel
-          name="password"
-          formControlName="password"
-        />
-      </div>
-      <div>
-        <button
-          class="btn btn-primary"
-          type="submit"
-          [disabled]="!isLoggedIn && form.invalid"
-        >
-          {{ isLoggedIn ? "Logout" : isLoginMode ? "Login" : "Sign Up" }}
-        </button>
-        |
-        <button
-          class="btn btn-danger"
-          type="button"
-          (click)="onSwitchMode()"
-          [disabled]="isLoggedIn"
-        >
-          Switch to {{ !isLoginMode ? "Login" : "Sign Up" }}
-        </button>
-      </div>
-    </form>
   </div>
 </div>

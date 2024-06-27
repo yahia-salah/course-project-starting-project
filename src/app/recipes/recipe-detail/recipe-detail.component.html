@@ -1,61 +1,77 @@
 @if(recipe){
-<div class="row">
-  <div class="col-xs-12">
-    <img
-      class="img-responsive"
-      [src]="recipe.imagePath"
-      [alt]="recipe.name"
-      style="max-height: 300px"
-    />
+<div class="container">
+  <div class="row pt-3">
+    <div class="col-sm-12">
+      <img
+        class="img-fluid rounded-2"
+        [src]="recipe.imagePath"
+        [alt]="recipe.name"
+        style="max-height: 300px"
+      />
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    <h1>{{ recipe.name }}</h1>
+  <div class="row pt-1">
+    <div class="col-sm-12">
+      <h1>{{ recipe.name }}</h1>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    <div appDropdown class="btn-group">
-      <button
-        type="button"
-        class="btn btn-primary dropdown-toggle"
-        data-toggle="dropdown"
-      >
-        Manage Recipe <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li>
-          <a style="cursor: pointer" (click)="onAddToShoppingList()"
-            >To Shopping List</a
-          >
-        </li>
-        <li>
-          <a style="cursor: pointer" (click)="onEditRecipe()">Edit Recipe</a>
-        </li>
-        <li>
-          <a style="cursor: pointer" (click)="onDeleteRecipe()"
-            >Delete Recipe</a
-          >
+  <div class="row">
+    <div class="col-sm-12">
+      <div appDropdown class="dropdown" data-bs-theme="dark">
+        <button
+          type="button"
+          class="btn btn-secondary dropdown-toggle"
+          data-bs-toggle="dropdown"
+        >
+          Manage Recipe <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <li>
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              (click)="onAddToShoppingList()"
+              >To Shopping List</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              (click)="onEditRecipe()"
+              >Edit Recipe</a
+            >
+          </li>
+          <li>
+            <a
+              class="dropdown-item"
+              style="cursor: pointer"
+              (click)="onDeleteRecipe()"
+              >Delete Recipe</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row pt-2">
+    <div class="col-sm-12">
+      {{ recipe.description }}
+    </div>
+  </div>
+  <div class="row pt-2 pb-5">
+    <div class="col-sm-12">
+      <ul class="list-group">
+        <li
+          class="list-group-item"
+          *ngFor="let ingredient of recipe.ingredients"
+        >
+          {{ ingredient.amount }} x {{ ingredient.name }}
         </li>
       </ul>
     </div>
   </div>
 </div>
-<div class="row">
-  <div class="col-xs-12">
-    {{ recipe.description }}
-  </div>
-</div>
-<div class="row">
-  <div class="col-xs-12">
-    <ul class="list-group">
-      <li class="list-group-item" *ngFor="let ingredient of recipe.ingredients">
-        {{ ingredient.amount }} x {{ ingredient.name }}
-      </li>
-    </ul>
-  </div>
-</div>
 } @else {
-<p>Please select a Recipe!</p>
+<p class="pt-3">Please select a Recipe!</p>
 }

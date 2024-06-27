@@ -1,119 +1,167 @@
-<div class="row" style="margin-bottom: 6rem">
-  <div class="col-xs-12">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <div class="row">
-        <div class="col-xs-12" style="margin-bottom: 1rem">
-          <button
-            class="btn btn-success"
-            type="submit"
-            style="margin-right: 1rem"
-            [disabled]="!form.valid"
-          >
-            Save
-          </button>
-          <button class="btn btn-danger" type="button" (click)="onCancel()">
-            Cancel
-          </button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input
-              type="text"
-              id="name"
-              class="form-control"
-              formControlName="name"
-            />
+<div class="container">
+  <div class="row pt-3">
+    <div class="col-sm-12">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="col-sm-12">
+            <button
+              class="btn btn-success me-2"
+              type="submit"
+              [disabled]="!form.valid"
+            >
+              Save
+            </button>
+            <button class="btn btn-danger" type="button" (click)="onCancel()">
+              Cancel
+            </button>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="imagePath">Image Url</label>
-            <input
-              type="text"
-              id="imagePath"
-              class="form-control"
-              formControlName="imagePath"
-              #imagePath
-            />
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <img
-            *ngIf="recipe?.imagePath || imagePath.value?.length > 0"
-            class="img-responsive"
-            [src]="recipe?.imagePath || imagePath.value"
-            [alt]="recipe?.name"
-          />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group">
-            <label for="description">Description</label>
-            <textarea
-              id="description"
-              class="form-control"
-              formControlName="description"
-              rows="6"
-            ></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12" formArrayName="ingredients">
-          <div
-            class="row"
-            *ngFor="let ingredient of controls; let i = index"
-            [formGroupName]="i"
-            style="margin-bottom: 1rem"
-          >
-            <div class="col-xs-8">
-              <input type="text" class="form-control" formControlName="name" />
-            </div>
-            <div class="col-xs-2">
+        <div class="row pt-3">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label class="form-label" for="name">Name</label>
               <input
-                type="number"
+                type="text"
+                id="name"
                 class="form-control"
-                formControlName="amount"
+                formControlName="name"
+                [class.is-invalid]="
+                  form.get('name').invalid && form.get('name').touched
+                "
+                [class.is-valid]="
+                  form.get('name').valid && form.get('name').touched
+                "
               />
             </div>
-            <div class="col-xs-2">
-              <button
-                type="button"
-                class="btn btn-danger"
-                (click)="onDeleteIngredient(i)"
-              >
-                X
-              </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label class="form-label" for="imagePath">Image Url</label>
+              <input
+                type="text"
+                id="imagePath"
+                class="form-control"
+                formControlName="imagePath"
+                #imagePath
+                [class.is-invalid]="
+                  form.get('imagePath').invalid && form.get('imagePath').touched
+                "
+                [class.is-valid]="
+                  form.get('imagePath').valid && form.get('imagePath').touched
+                "
+              />
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <button
-            type="button"
-            class="btn btn-success"
-            (click)="onAddIngredient()"
-          >
-            Add Ingredient
-          </button>
-          <button
-            type="button"
-            class="btn btn-danger"
-            (click)="onDeleteAllIngredients()"
-          >
-            Delete All Ingredients
-          </button>
+        <div class="row pt-3 pb-1">
+          <div class="col-sm-12">
+            <img
+              *ngIf="recipe?.imagePath || imagePath.value?.length > 0"
+              class="img-fluid rounded-2"
+              [src]="recipe?.imagePath || imagePath.value"
+              [alt]="recipe?.name"
+            />
+          </div>
         </div>
-      </div>
-    </form>
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="form-group">
+              <label class="form-label" for="description">Description</label>
+              <textarea
+                id="description"
+                class="form-control"
+                formControlName="description"
+                rows="6"
+                [class.is-invalid]="
+                  form.get('description').invalid &&
+                  form.get('description').touched
+                "
+                [class.is-valid]="
+                  form.get('description').valid &&
+                  form.get('description').touched
+                "
+              ></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-12" formArrayName="ingredients">
+            <div
+              class="row pt-3"
+              *ngFor="let ingredient of controls; let i = index"
+              [formGroupName]="i"
+            >
+              <div class="col-sm-8">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="name"
+                  [class.is-invalid]="
+                    form.get('ingredients').get(i.toString()).get('name')
+                      .invalid &&
+                    form.get('ingredients').get(i.toString()).get('name')
+                      .touched
+                  "
+                  [class.is-valid]="
+                    form.get('ingredients').get(i.toString()).get('name')
+                      .valid &&
+                    form.get('ingredients').get(i.toString()).get('name')
+                      .touched
+                  "
+                />
+              </div>
+              <div class="col-sm-2">
+                <input
+                  type="number"
+                  class="form-control"
+                  formControlName="amount"
+                  [class.is-invalid]="
+                    form.get('ingredients').get(i.toString()).get('amount')
+                      .invalid &&
+                    form.get('ingredients').get(i.toString()).get('amount')
+                      .touched
+                  "
+                  [class.is-valid]="
+                    form.get('ingredients').get(i.toString()).get('amount')
+                      .valid &&
+                    form.get('ingredients').get(i.toString()).get('amount')
+                      .touched
+                  "
+                />
+              </div>
+              <div class="col-sm-2 d-flex justify-content-end">
+                <button
+                  type="button"
+                  class="btn btn-danger"
+                  (click)="onDeleteIngredient(i)"
+                >
+                  X
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row pt-3 pb-5">
+          <div class="col-sm-12">
+            <button
+              type="button"
+              class="btn btn-success me-2"
+              (click)="onAddIngredient()"
+            >
+              Add Ingredient
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              (click)="onDeleteAllIngredients()"
+            >
+              Delete All Ingredients
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

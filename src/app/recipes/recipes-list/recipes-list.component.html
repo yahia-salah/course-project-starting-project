@@ -1,9 +1,12 @@
-<div class="row">
-  <div class="col-xs-12">
+<div class="row pt-3">
+  <div class="col-sm-12 p-0">
     <button class="btn btn-success" (click)="onNewRecipe()">New Recipe</button>
   </div>
 </div>
-
-@for(recipe of recipes;track recipe.id){
-<app-recipe-item [recipe]="recipe"></app-recipe-item>
-}
+<div class="row pt-3">
+  <div class="col-sm-12 list-group">
+    @for(recipe of recipes;track recipe.id){
+    <app-recipe-item [recipe]="recipe"></app-recipe-item>
+    }
+  </div>
+</div>
