@@ -1,10 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { DataStorageService } from '../shared/data-storage.service';
 import { AuthService } from '../auth/auth.service';
 import { LoadingSpinnerService } from '../shared/loading-spinner.service';
 import { finalize, catchError, throwError, Subscription } from 'rxjs';
 import { SweetAlertService } from '../shared/sweetalert.service';
 import { User } from 'firebase/auth';
+import {
+  faEllipsis,
+  faCloudArrowDown,
+  faCloudArrowUp,
+  faArrowRightFromBracket,
+  faBowlFood,
+} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-header',
@@ -15,6 +28,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   authStateSubscription: Subscription;
   isLoggedIn = false;
   user: User;
+  faEllipsis = faEllipsis;
+  faCloudArrowDown = faCloudArrowDown;
+  faCloudArrowUp = faCloudArrowUp;
+  faArrowRightFromBracket = faArrowRightFromBracket;
+  faBowlFood = faBowlFood;
+  @ViewChild('bdNavbarToggle') bdNavbarToggle: ElementRef;
+  @ViewChild('bdNavbar') bdNavbar: ElementRef;
 
   constructor(
     private dataStorageService: DataStorageService,
@@ -64,5 +84,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  onNavClick(event: MouseEvent) {
+    if (this.bdNavbar.nativeElement.classList.contains('show')) {
+      this.bdNavbarToggle.nativeElement.click();
+    }
   }
 }

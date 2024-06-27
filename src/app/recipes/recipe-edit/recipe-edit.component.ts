@@ -3,6 +3,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RecipeService } from '../recipe.service';
 import { Recipe } from '../../../models/recipe.model';
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -14,6 +15,7 @@ export class RecipeEditComponent implements OnInit {
   recipe: Recipe;
   editMode = false;
   form: FormGroup;
+  faTrashCan = faTrashCan;
 
   constructor(
     private route: ActivatedRoute,

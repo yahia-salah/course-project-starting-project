@@ -137,7 +137,7 @@
                   class="btn btn-danger"
                   (click)="onDeleteIngredient(i)"
                 >
-                  X
+                  <fa-icon [icon]="faTrashCan"></fa-icon>
                 </button>
               </div>
             </div>
@@ -156,6 +156,7 @@
               type="button"
               class="btn btn-danger"
               (click)="onDeleteAllIngredients()"
+              [disabled]="form.get('ingredients')?.length === 0"
             >
               Delete All Ingredients
             </button>

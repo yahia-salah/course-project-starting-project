@@ -1,10 +1,10 @@
 <div class="container align-content-center">
   <div class="row">
-    <div class="col-sm-12 col-md-6 offset-md-3 bg-light p-3 rounded-2">
+    <div class="col-sm-12 col-md-6 offset-md-3 card p-3 rounded-2">
       <div class="alert alert-danger" *ngIf="error">
         <p>{{ error }}</p>
       </div>
-      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <form class="bg-transparent" [formGroup]="form" (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label for="email" class="form-label">E-Mail</label>
           <input
